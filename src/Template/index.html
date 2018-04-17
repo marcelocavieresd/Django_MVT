@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-4">
+            <button id="enviar" class="btn btn-primary btn-block">Enviar</button>
+        </div>
+        <div class="col-md-4">
+            <input id="name" type="text" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <input id="description" type="text" class="form-control">
+        </div>
+    </div>
+    <div class="row">
+       <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <th>id</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                </thead>
+                <tbody id="body">
+                   {% for x in licencias %}
+                    <tr>
+                        <td>{{x.pk}}</td>
+                        <td>{{x.name}}</td>
+                        <td>{{x.description}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table> 
+       </div>
+    </div>
+</body>
+
+<script
+src="https://code.jquery.com/jquery-3.3.1.min.js"
+integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+crossorigin="anonymous"></script>
+
+<script>
+
+    $(document).ready(function(){
+       
+     $("#enviar").on("click",function(){
+        
+         data = {csrfmiddlewaretoken:"{{csrf_token}}",name:$("#name").val(),description:$("#description").val()}
+         
+         $.post("{% url 'crear_licencia' %}",data,function(response){
+            $("#body").append(response.html);
+         })
+     });
+        
+    });
+    
+</script>
+</html>
